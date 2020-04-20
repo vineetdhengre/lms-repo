@@ -4,8 +4,8 @@ const express = require("express");
 const mongoose = require("mongoose");
 
 const app = express();
-// Replace the following with your Atlas connection string
-
+// var server = app.listen(8000);
+var io = require("socket.io");
 const client = new MongoClient(key);
 
 // The database to use
@@ -36,10 +36,15 @@ module.exports = async function run() {
       idd: "1",
     });
     //  document.getElementById("text").innerHTML = myDoc.name;
+    io.on('connection', (socket) => {
+      console.log('Data connected');
+
+      socket.emit("chat message", myDoc.name);
+    });
 
     // Print to the console
     console.log(myDoc.name);
-    app.get("/", (req, res) => res.send(myDoc.name));
+    
   } catch (err) {
     console.log(err.stack);
   } finally {
