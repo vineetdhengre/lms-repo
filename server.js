@@ -7,13 +7,12 @@ var io = require("socket.io").listen(server);
 const key = require("./mongo").mongoURI;
 const client = new MongoClient(key);
 
-
 mongoose
   .connect(key, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => {
     console.log("DB Connected");
 
-    async function run() {
+    async function data() {
       const dbName = "test";
       try {
         await client.connect();
@@ -32,7 +31,6 @@ mongoose
           console.log("data connected");
           socket.emit("chat message", myDoc.name.first);
         });
-        
       } catch (err) {
         console.log(err.stack);
       } finally {
